@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZombyDash — Game Design Document</title>
+<meta name="description" content="Game Design Document for ZombyDash — a top-down cartoony zombie survival game built in Unreal Engine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0C0C0C; --panel:#141414; --panel-2:#191919; --line:#2A2A2A; --line-soft:#1E1E1E;
+    --cream:#F3EFE9; --muted:#8C8C8C; --red:#E24A30; --red-dim:#A8341F; --radius:2px; --maxw:1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--black); color:var(--cream); font-family:'Inter',sans-serif; line-height:1.6; overflow-x:hidden; }
+  ::selection{ background:var(--red); color:#fff; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  h1,h2,h3{ font-family:'Anton',sans-serif; font-weight:400; text-transform:uppercase; margin:0; letter-spacing:0.01em; }
+  h4{ font-family:'Space Grotesk',sans-serif; margin:0; font-weight:600; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+  header{ position:fixed; top:0; left:0; right:0; z-index:50; background:rgba(12,12,12,0.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--line-soft); }
+  .nav{ max-width:var(--maxw); margin:0 auto; padding:0 28px; height:64px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; letter-spacing:0.08em; }
+  .nav-links{ display:flex; gap:24px; font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:0.08em; }
+  .nav-links a{ color:var(--muted); transition:color .2s; padding:4px 0; border-bottom:2px solid transparent; white-space:nowrap; }
+  .nav-links a:hover{ color:var(--cream); border-color:var(--red); }
+
+  .page-hero{ padding:150px 0 44px; }
+  .eyebrow{ font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.14em; color:var(--red); text-transform:uppercase; margin-bottom:22px; }
+  h1.page-title{ font-size:clamp(46px,8.5vw,96px); line-height:0.9; margin-bottom:16px; }
+  .page-sub{ color:var(--muted); font-size:16px; max-width:62ch; }
+  .back-link{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted); display:inline-flex; align-items:center; gap:8px; margin-bottom:30px; }
+  .back-link:hover{ color:var(--red); }
+  .meta-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+  .meta-chip{ font-family:'JetBrains Mono',monospace; font-size:12px; padding:8px 14px; border:1px solid var(--line); border-radius:99px; color:var(--cream); }
+  .meta-chip.red{ border-color:var(--red); color:var(--red); }
+
+  .block-title{ font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red); display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+  .block-title .rule{ height:1px; flex:0 0 40px; background:var(--red); opacity:0.5; }
+
+  .panel{ border:1px solid var(--line); background:linear-gradient(180deg,var(--panel),var(--panel-2)); padding:32px clamp(20px,4vw,44px); border-radius:var(--radius); margin-bottom:24px; }
+  .panel .idx{ font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .panel h3{ font-family:'Space Grotesk',sans-serif; text-transform:none; font-size:22px; font-weight:600; margin-bottom:16px; }
+  .panel h4.sub{ font-family:'JetBrains Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin:18px 0 8px; }
+  .panel h4.sub:first-of-type{ margin-top:0; }
+  .panel p{ color:#C9C9C9; font-size:14.5px; margin:0 0 6px; }
+  .panel ul{ margin:0; padding:0; list-style:none; display:grid; gap:8px; }
+  .panel li{ font-size:14.5px; color:#C9C9C9; padding-left:18px; position:relative; }
+  .panel li::before{ content:"→"; position:absolute; left:0; color:var(--red); }
+  .stat-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:4px; }
+  @media (min-width:600px){ .stat-grid{ grid-template-columns:repeat(4,1fr); } }
+  .stat{ border:1px solid var(--line-soft); padding:14px 16px; border-radius:var(--radius); }
+  .stat .v{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; color:var(--red); }
+  .stat .k{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); text-transform:uppercase; margin-top:2px; }
+
+  footer{ border-top:1px solid var(--line-soft); padding:28px 0; margin-top:50px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); }
+  footer a:hover{ color:var(--red); }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){ *{ transition-duration:.01ms !important; scroll-behavior:auto !important; } }
+  a:focus-visible{ outline:2px solid var(--red); outline-offset:3px; }
+
+  @media (max-width:600px){
+    .wrap{ padding:0 18px; }
+    .page-hero{ padding:110px 0 30px; }
+    .panel{ padding:24px 18px; }
+    .nav{ padding:0 16px; }
+    .nav-links{ gap:12px; font-size:10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="brand">SIDHARTH ALWAL</a>
+    <div class="nav-links">
+      <a href="technical.html">TECHNICAL</a>
+      <a href="creative.html">CREATIVE</a>
+      <a href="communication.html">COMMUNICATION</a>
+      <a href="index.html#contact">CONTACT</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap page-hero">
+  <a href="technical.html" class="back-link">← Back to Technical</a>
+  <div class="eyebrow">Game Design Document</div>
+  <h1 class="page-title">ZOMBYDASH</h1>
+  <p class="page-sub">Top-down action / survival — a cartoony, no-combat take on the zombie chase, built in Unreal Engine.</p>
+  <div class="meta-row">
+    <span class="meta-chip red">Unreal Engine</span>
+    <span class="meta-chip">PC / Mobile</span>
+    <span class="meta-chip">Ages 10+</span>
+    <span class="meta-chip">Survival · No Combat</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="block-title"><span class="rule"></span>01 · Overview</div>
+  <div class="panel reveal">
+    <h4 class="sub">Genre</h4>
+    <p>Top-down Action / Survival</p>
+    <h4 class="sub">Platform</h4>
+    <p>PC / Mobile</p>
+    <h4 class="sub">Art Style</h4>
+    <p>Cartoony, colorful, exaggerated animations and characters — bold outlines, expressive characters, and humorous zombie designs.</p>
+    <h4 class="sub">Target Audience</h4>
+    <p>Ages 10+ — casual players who enjoy light survival challenges and progression-based gameplay.</p>
+  </div>
+
+  <div class="block-title"><span class="rule"></span>02 · Core Gameplay</div>
+  <div class="panel reveal">
+    <h4 class="sub">Objective</h4>
+    <p>Escape from waves of cartoon-style zombies and reach the Doctor to heal. Accumulate 200 health points to progress to the next level.</p>
+    <h4 class="sub">Game Loop</h4>
+    <ul>
+      <li>Player starts with low health (e.g., 50 HP)</li>
+      <li>Zombies chase the player continuously</li>
+      <li>The player navigates the map to avoid zombies and reach healing stations (the Doctor)</li>
+      <li>Each visit to the Doctor increases HP</li>
+      <li>On reaching 200 HP, the player auto-advances to the next level</li>
+    </ul>
+  </div>
+
+  <div class="block-title"><span class="rule"></span>03 · Controls</div>
+  <div class="panel reveal">
+    <h4 class="sub">PC</h4>
+    <ul>
+      <li>WASD / Arrow Keys — move player</li>
+      <li>Secret Keys — figure them out throughout the game!</li>
+    </ul>
+  </div>
+
+  <div class="block-title"><span class="rule"></span>04 · Characters</div>
+  <div class="panel reveal">
+    <h4 class="sub">Player</h4>
+    <ul>
+      <li>Cartoony human character</li>
+      <li>Starts with minimal health</li>
+      <li>Fast, agile</li>
+      <li>Limited stamina for dashing</li>
+    </ul>
+    <h4 class="sub">Zombies</h4>
+    <ul>
+      <li>Silly, exaggerated zombies with different looks</li>
+      <li>Random speeds and movements</li>
+      <li>Increase in numbers as the game progresses</li>
+    </ul>
+    <h4 class="sub">Doctor</h4>
+    <ul>
+      <li>Friendly NPC</li>
+      <li>Heals the player on touch (+20 HP)</li>
+    </ul>
+  </div>
+
+  <div class="block-title"><span class="rule"></span>05 · Health &amp; Healing System</div>
+  <div class="panel reveal">
+    <div class="stat-grid">
+      <div class="stat"><div class="v">100 HP</div><div class="k">Starting Health</div></div>
+      <div class="stat"><div class="v">200 HP</div><div class="k">Max Per Level</div></div>
+      <div class="stat"><div class="v">−20 HP</div><div class="k">Touching Zombies</div></div>
+      <div class="stat"><div class="v">+20 HP</div><div class="k">Reaching the Doctor</div></div>
+    </div>
+    <p style="margin-top:18px;">Reaching 200 HP triggers a level-up.</p>
+  </div>
+
+  <div class="block-title"><span class="rule"></span>06 · Level Design</div>
+  <div class="panel reveal">
+    <h4 class="sub">Layout</h4>
+    <ul>
+      <li>Top-down, semi-open maps</li>
+      <li>Obstacles, walls, and environmental hazards</li>
+      <li>Randomly spawning zombies</li>
+      <li>Doctor appears at a safe spot each time after use</li>
+    </ul>
+    <h4 class="sub">Progression</h4>
+    <ul>
+      <li>More zombies each level</li>
+      <li>Faster zombies</li>
+      <li>Traps or distractions (e.g., fake doctors, banana peels)</li>
+      <li>Optional upgrades (speed boosts, decoys, etc.)</li>
+    </ul>
+  </div>
+
+  <div class="block-title"><span class="rule"></span>07 · Art &amp; Sound</div>
+  <div class="panel reveal">
+    <h4 class="sub">Art Style</h4>
+    <ul>
+      <li>Bright, vibrant palette</li>
+      <li>Exaggerated, bouncy animations</li>
+      <li>Fun UI with comic-style HP bar and effects</li>
+    </ul>
+    <h4 class="sub">Sound</h4>
+    <ul>
+      <li>Funky, upbeat background music</li>
+      <li>Comical zombie groans</li>
+      <li>Game over sound</li>
+      <li>Sound cue on triggering a new level</li>
+    </ul>
+  </div>
+
+  <div class="block-title"><span class="rule"></span>08 · Development Tools</div>
+  <div class="panel reveal">
+    <h4 class="sub">Game Engine</h4>
+    <p>Unreal Engine</p>
+    <h4 class="sub">Sound</h4>
+    <p>Royalty-free music for background score</p>
+  </div>
+
+  <div class="block-title"><span class="rule"></span>09 · Unique Selling Points</div>
+  <div class="panel reveal" style="margin-bottom:50px;">
+    <ul>
+      <li>Casual, humorous take on zombie survival</li>
+      <li>Health-based level progression system</li>
+      <li>No combat — focus on dodging, escaping, and strategy</li>
+      <li>Fun for all ages with charming visuals</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer class="wrap">
+  <div>© 2026 Sidharth Alwal</div>
+  <a href="https://github.com/Nx4x/bounce.git" class="mono" target="_blank" rel="noopener">View on GitHub →</a>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sidharth Alwal — Communication</title>
+<meta name="description" content="Leadership, public speaking, and outreach — club roles, event teams, and community work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0C0C0C; --panel:#141414; --panel-2:#191919; --line:#2A2A2A; --line-soft:#1E1E1E;
+    --cream:#F3EFE9; --muted:#8C8C8C; --red:#E24A30; --red-dim:#A8341F; --radius:2px; --maxw:1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--black); color:var(--cream); font-family:'Inter',sans-serif; line-height:1.6; overflow-x:hidden; }
+  ::selection{ background:var(--red); color:#fff; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  h1,h2,h3{ font-family:'Anton',sans-serif; font-weight:400; text-transform:uppercase; margin:0; letter-spacing:0.01em; }
+  h4{ font-family:'Space Grotesk',sans-serif; margin:0; }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+  header{ position:fixed; top:0; left:0; right:0; z-index:50; background:rgba(12,12,12,0.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--line-soft); }
+  .nav{ max-width:var(--maxw); margin:0 auto; padding:0 28px; height:64px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; letter-spacing:0.08em; }
+  .nav-links{ display:flex; gap:24px; font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:0.08em; }
+  .nav-links a{ color:var(--muted); transition:color .2s; padding:4px 0; border-bottom:2px solid transparent; white-space:nowrap; }
+  .nav-links a:hover, .nav-links a.active{ color:var(--cream); border-color:var(--red); }
+
+  .page-hero{ padding:150px 0 50px; }
+  .eyebrow{ font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.14em; color:var(--red); text-transform:uppercase; margin-bottom:22px; }
+  h2.page-title{ font-size:clamp(56px,10vw,110px); line-height:0.9; margin-bottom:22px; }
+  .page-sub{ color:var(--muted); font-size:16px; max-width:58ch; }
+  .back-link{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted); display:inline-flex; align-items:center; gap:8px; margin-bottom:30px; }
+  .back-link:hover{ color:var(--red); }
+
+  .block-title{ font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red); display:flex; align-items:center; gap:12px; margin-bottom:40px; }
+  .block-title .rule{ height:1px; flex:0 0 40px; background:var(--red); opacity:0.5; }
+
+  /* ============ VERTICAL TIMELINE ============ */
+  .timeline{ position:relative; padding-left:46px; margin-bottom:60px; }
+  .timeline::before{
+    content:""; position:absolute; left:9px; top:6px; bottom:6px; width:1px;
+    background:linear-gradient(180deg, var(--red), var(--line) 12%, var(--line) 88%, transparent);
+  }
+  .t-item{ position:relative; padding-bottom:56px; }
+  .t-item:last-child{ padding-bottom:0; }
+  .t-dot{
+    position:absolute; left:-46px; top:4px; width:19px; height:19px; border-radius:50%;
+    background:var(--panel); border:1px solid var(--red); display:flex; align-items:center; justify-content:center;
+  }
+  .t-dot::after{ content:""; width:7px; height:7px; border-radius:50%; background:var(--red); }
+  .t-date{ font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--red); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px; }
+  .t-role{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:21px; margin-bottom:4px; }
+  .t-org{ font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--muted); margin-bottom:14px; }
+  .t-desc{ color:#C9C9C9; font-size:14.5px; max-width:64ch; }
+  .t-desc + .t-desc{ margin-top:10px; }
+
+  footer{ border-top:1px solid var(--line-soft); padding:28px 0; margin-top:50px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); }
+  footer a:hover{ color:var(--red); }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){ *{ transition-duration:.01ms !important; scroll-behavior:auto !important; } }
+  a:focus-visible{ outline:2px solid var(--red); outline-offset:3px; }
+
+  @media (max-width:600px){
+    .wrap{ padding:0 18px; }
+    .page-hero{ padding:110px 0 30px; }
+    .nav{ padding:0 16px; }
+    .nav-links{ gap:12px; font-size:10px; }
+    .timeline{ padding-left:34px; }
+    .t-dot{ left:-34px; width:15px; height:15px; }
+    .t-role{ font-size:18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="brand">SIDHARTH ALWAL</a>
+    <div class="nav-links">
+      <a href="technical.html">TECHNICAL</a>
+      <a href="creative.html">CREATIVE</a>
+      <a href="communication.html" class="active">COMMUNICATION</a>
+      <a href="index.html#contact">CONTACT</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap page-hero">
+  <a href="index.html" class="back-link">← Back to hub</a>
+  <div class="eyebrow">03 / Communication</div>
+  <h2 class="page-title">VOICE<br>&amp; LEAD</h2>
+  <p class="page-sub">Leadership, public speaking, and outreach — the club roles, event teams, and community work behind the scenes.</p>
+</div>
+
+<div class="wrap">
+  <div class="block-title"><span class="rule"></span>Timeline</div>
+
+  <div class="timeline reveal">
+
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-date">2027</div>
+      <div class="t-role">Representative of Networking</div>
+      <div class="t-org">Airo — Mahindra University</div>
+      <div class="t-desc">Responsible for reaching out to and communicating with potential sponsors.</div>
+    </div>
+
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-date">June 2026 — July 2026</div>
+      <div class="t-role">Student Intern</div>
+      <div class="t-org">Youth For Seva (YFS) — Social Sensitisation Internship</div>
+      <div class="t-desc">Spoke with people from various communities facing hardship in different ways, learning about the daily struggles they navigate.</div>
+      <div class="t-desc">This experience opened my eyes to a side of my city that often gets overlooked.</div>
+    </div>
+
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-date">2025 — 2026</div>
+      <div class="t-role">Technical Head</div>
+      <div class="t-org">7 Screens — Mahindra University</div>
+      <div class="t-desc">Headed the club on its technical side — overseeing video editing, team management, event management, sound editing, and VFX.</div>
+    </div>
+
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-date">2024</div>
+      <div class="t-role">Executive Board — TEC</div>
+      <div class="t-org">International Inter-Firm Business Meet (IIFBM), DPS Nacharam</div>
+      <div class="t-desc">Managed a team of 30 in assisting with speaking skills, public communication, and overcoming stage fear.</div>
+      <div class="t-desc">Helped participants develop a clear view of how to present their points in an MUN setting.</div>
+    </div>
+
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-date">2023 — 2024</div>
+      <div class="t-role">Gavel Club Member</div>
+      <div class="t-org">Affiliated with Toastmasters International</div>
+      <div class="t-desc">Former member of the club's public speaking program, building confidence, clarity, and leadership through regular structured presentations.</div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="wrap">
+  <div>© 2026 Sidharth Alwal</div>
+  <a href="technical.html" class="mono">View Technical →</a>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
